@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 upload-page">
+                    <div class="u-area" id="file-drop-area">
+                        <form action="{% url 'create_first_step' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            {{ form.as_p }}
+                            <button class="btn btn-primary u-btn" id="upload-video-button">Загрузить видео</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

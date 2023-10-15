@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 upload-page">
+<div class="u-area" id="file-drop-area">
+    <label for="video-file-input">
+        <i class="cv cvicon-cv-upload-video"></i>
+        <p class="u-text1">Выберите видеофайлы для загрузки</p>
+        <p class="u-text2">или перетащите видеофайлы</p>
+    </label>
+
+    <form action="{% url 'create_first_step' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="video-file-input" name="video_file" style="display: none;" accept="video/*">
+        <button class="btn btn-primary u-btn" id="upload-video-button">Загрузить видео</button>
+    </form>
+</div>
+                    <style>#file-drop-area.dragover {
+    border: 2px dashed #007bff;
+}</style>
+<script>
+    // Обработчик события клика на иконке
+    document.querySelector('label[for="video-file-input"]').addEventListener('click', function () {
+        document.getElementById('video-file-input').click();
+    });
+
+    // Обработчик изменения выбранного файла
+    document.getElementById('video-file-input').addEventListener('change', function () {
+        const fileInput = this;
+        const selectedFiles = fileInput.files;
+
+        if (selectedFiles.length > 0) {
+            const fileName = selectedFiles[0].name;
+            document.querySelector('.u-text1').innerText = `Выбран файл: ${fileName}`;
+        }
+    });
+
+    // Обработчики событий для функции перетаскивания
+    const fileDropArea = document.getElementById('file-drop-area');
+
+    fileDropArea.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        fileDropArea.classList.add('dragover');
+    });
+
+    fileDropArea.addEventListener('dragleave', function (e) {
+        e.preventDefault();
+        fileDropArea.classList.remove('dragover');
+    });
+
+    fileDropArea.addEventListener('drop', function (e) {
+        e.preventDefault();
+        fileDropArea.classList.remove('dragover');
+
+        const selectedFiles = e.dataTransfer.files;
+
+        if (selectedFiles.length > 0) {
+            const fileName = selectedFiles[0].name;
+            document.querySelector('.u-text1').innerText = `Выбран файл: ${fileName}`;
+            document.getElementById('video-file-input').files = selectedFiles;
+        }
+    });
+</script>
+                    <div class="u-terms">
+                        <p>Отправляя свои видеоролики circle, вы подтверждаете, что согласны с <a href="#">Условиями
+                            предоставления услуг</a> и <a href="#">Правилами сообщества</a>.</p>
+                        <p class="hidden-xs">Пожалуйста, следите за тем, чтобы не нарушать авторские права других лиц
+                            или права на неприкосновенность частной жизни. Узнать больше</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
